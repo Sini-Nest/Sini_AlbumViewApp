@@ -1,0 +1,31 @@
+﻿@model IEnumerable<AlbumViewApp.Models.ThumbNail.ThumbNailViewModel>
+
+@{
+    ViewBag.Title = "ThumbNailView";
+}
+
+
+    @{    int count = 0; } 
+<h3>Photo Gallery</h3>
+<h3><u>Album: @ViewData["AlbumTitle"] </u></h3> 
+
+    <table class="table table-bordered table-responsive table-hover">
+        <tr>
+            @foreach (var item in Model)
+            {
+                <td>
+
+                    <img src=@item.ThumbNailUrl height="50" width="50" />
+                    <figcaption>@item.Title</figcaption>
+                </td>
+                if (++count % 6 == 0)
+                {
+                    @:</tr><tr>
+
+
+                }
+            }
+        </tr>
+            
+
+        </table>

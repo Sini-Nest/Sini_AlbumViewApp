@@ -1,0 +1,106 @@
+﻿@model IEnumerable<AlbumViewApp.Models.UserDetails.UserDetailsViewModel>
+@using AlbumViewApp.Models.UserDetails
+
+@{
+    ViewBag.Title = "UserDetailsView";
+}
+
+<script type="text/javascript">
+    function ToggleFunction() {
+    var x = document.getElementById("second");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
+<div>
+    <h3>User Details</h3>
+   
+        <table id="first" class="table">
+            <thead></thead>
+            <tbody>
+
+                @foreach (var item in Model)
+            {
+                    <tr>
+                        @*<td colspan="2"> Name: </td>*@
+                        <td style="font-size:20px" colspan="6" >
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" >User Name: </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Email: </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Address: </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address.Street)<br>
+                            @Html.DisplayFor(modelItem => item.Address.City)<br>
+                            @Html.DisplayFor(modelItem => item.Address.Suite)<br>
+                            @Html.DisplayFor(modelItem => item.Address.Zipcode)<br>
+                            @Html.DisplayFor(modelItem => item.Address.geo.Lat)<br>
+                            @Html.DisplayFor(modelItem => item.Address.geo.Lng)<br>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Phone: </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Website: </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Website)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Company: </td>
+                        <td>
+
+                            <span style="width:30px"> Name :</span>    @Html.DisplayFor(modelItem => item.Company.Name)<br />
+                            <span style="width:30px"> CatchPhrase:</span>  @Html.DisplayFor(modelItem => item.Company.CatchPhrase)<br />
+                            <span style="width:30px">   Business:</span>  @Html.DisplayFor(modelItem => item.Company.Bs)<br />
+
+
+
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+
+        <div id="dvPost" onclick="ToggleFunction()">  <h3>Click here to view user's post </h3></div>
+        <table id="second" class="table" style="width:100%;display:none">
+            <thead></thead>
+            <tbody>
+                @foreach (var post in (List<PostModel>)ViewData["postdata"])
+            {
+
+                    <tr>
+                        <td colspan="6">
+                            <b>Title:</b> @post.Title<br />
+                            <b>Comments:</b> @post.Body
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+   
+</div>
+
+

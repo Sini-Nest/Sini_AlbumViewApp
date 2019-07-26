@@ -1,0 +1,102 @@
+﻿
+@model IPagedList<AlbumViewApp.Models.Home.AlbumViewModel>
+@using AlbumViewApp.Models.UserDetails
+@using AlbumViewApp.Models.ThumbNail
+@using PagedList
+@using PagedList.Mvc
+
+
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<style>
+.drplist {
+    width: 150px;
+}
+</style>
+
+<h3>Album List</h3>
+<div>
+  
+
+    @using (Html.BeginForm("Index","Home", FormMethod.Get))
+    {
+        <p>
+            <table style="float:right">
+
+                <tr>
+                    <td> Find by :</td>
+                    <td>                      
+                        @Html.DropDownList("searchfiltertype", new List<SelectListItem>
+                                     {
+                                         new SelectListItem {Text = "Name", Value="AuthorName"},
+                                         new SelectListItem {Text = "Title", Value="Title"},
+
+                                     }, new { @class = "drplist" })
+                    </td>
+                    <td> @Html.TextBox("searchstring", ViewBag.searchstring as string)</td>
+
+                    <td><input type="submit" value="Search" /></td>
+                </tr>
+            </table>
+        </p>
+    }
+    <div id="Searchalert" style="display:none;"><span>No data found for this Search</span></div>
+
+        <table id="AlbumListGrid" class="table table-bordered table-responsive table-hover" width="100">
+            <thead>
+                <tr>
+                    <td><b>ThumbNail</b></td>
+                    <td><b>Title</b></td>
+                    <td><b>Name</b></td>
+                    <td><b>Email</b></td>
+                    <td><b>Phone</b></td>
+                    <td><b>Address</b></td>
+                </tr>
+            </thead>
+            <tbody>
+
+
+                @foreach (var data in Model)
+                {
+                    <tr>
+                        <td width="20" height="20"><img src=@data.ThumbNailUrl height="50" width="50" /></td>
+                        <td>@Html.ActionLink(@data.Title, "ThumbNailView", "ThumbNail", new { albumid = data.Id, title = @data.Title }, null)</td>
+
+                        <td>@Html.ActionLink(@data.Name, "UserDetailsView", "UserDetails", new { userid = data.UserId }, null)</td>
+                        <td>@Html.DisplayFor(modelItem => data.Email)</td>
+                        <td>@Html.DisplayFor(modelItem => data.Phone)</td>
+                        <td>
+                            @data.Address.Street,&nbsp;
+                            @data.Address.Suite,&nbsp;
+                            @data.Address.City,&nbsp;
+                            @data.Address.Zipcode,&nbsp;
+                            @data.Address.geo.Lat,&nbsp;
+                            @data.Address.geo.Lng,&nbsp;
+                        </td>
+
+                    </tr>
+
+                }
+            </tbody>
+
+
+        </table>
+    @if (Model.Count() <= 0)
+    {
+        <div id="Searchalert" style="color:crimson" ><span>No data found for this Search</span></div>
+    }
+
+        <br />
+
+        @Html.PagedListPager(Model, pagenumber => Url.Action("Index", new
+   {
+       pagenumber,
+       searchfiltertype = ViewBag.searchfiltertype,
+       searchstring = ViewBag.searchstring
+
+   }))
+
+
+</div>
